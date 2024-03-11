@@ -1,0 +1,22 @@
+.navbar-header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+ul{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.App-logo {
+    margin-top: auto;
+    height: 40px;
+    pointer-events: none;
+  }
+  
+  @media (prefers-reduced-motion: no-preference) {
+    .App-logo {
+      animation: App-logo-spin infinite 20s linear;
+    }
+  }
