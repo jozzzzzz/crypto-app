@@ -1,10 +1,10 @@
 import './App.css';
 import NavbarHeader from './components/Navbar/NavbarHeader.jsx';
 import CryptoData from './components/Cryptos/CryptoData.jsx';
-import Graph from './components/Cryptos/Graph';
+import Graph from './components/Cryptos/Graph.jsx';
 import CryptoDisplay from './classObject/CryptoList.js';
 import CryptoGraph from './classObject/CryptoGraph.js';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function App() {
   const [graphLabels, setGraphLabels] = useState([]);
@@ -12,18 +12,20 @@ function App() {
 
   let cryptoList = CryptoDisplay();
   let cryptoGraph = CryptoGraph();
-  console.log(cryptoGraph)
-  cryptoGraph.map((crypto) => {
-    console.log(crypto);
-    setGraphLabels([...graphLabels, crypto[0]]);
-    setGraphData([...graphData, crypto[1]]);
-  });
+  useEffect(() => {
+    if (cryptoGraph && cryptoGraph.length > 0) {
+      const labels = cryptoGraph.map(crypto => crypto[0]);
+      const data = cryptoGraph.map(crypto => crypto[1]);
+      setGraphLabels(labels);
+      setGraphData(data);
+    }
+  }, [cryptoGraph]);
 
   return (
     <div className='App'>
     <NavbarHeader />
-    <Graph label={graphLabels} data={graphData}/>
-    {
+    {graphLabels.length > 0 && graphData.length > 0 && <Graph label={graphLabels} data={graphData} />}
+    { 
       cryptoList.map((crypto, index) => {
         return <CryptoData key={index} {...crypto} />
       })

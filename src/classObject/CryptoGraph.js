@@ -1,15 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 function CryptoGraph() {
-    const [cryptos, setCryptos] = useState([]);
+    const [data, setData] = useState(null);
 
-    async function fetchData() {
-        const response = await fetch('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=7&interval=daily');
-        const data = await response.json();
-        setCryptos(data.prices);
-    }
-    fetchData();
-    return cryptos;
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1m');
+                setData(response.data);
+            } catch (error) {
+                console.log(error);
+            }
+        };
+        fetchData();
+    }, []);
+
+    return data;
 }
 
 export default CryptoGraph;

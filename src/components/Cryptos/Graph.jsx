@@ -1,14 +1,24 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Line } from 'react-chartjs-2';
 
-function Graph(props) {
-    const { labels, data } = props;
+function Graph({labels = [], data = []}) {
+    const chartRef = useRef(null);
+    const id = "123"
+
+    
+    if (id) {
+        const chartElement = document.getElementById(id);
+        if (chartElement) {
+            chartElement.parentElement.removeChild(chartElement);
+        }
+    }
+
     const chartData = {
-        labels: labels,
+        labels,
         datasets: [
             {
                 label: 'Crypto Value',
-                data: data,
+                data,
                 fill: false,
                 backgroundColor: 'rgba(75,192,192,0.2)',
                 borderColor: 'rgba(75,192,192,1)',
@@ -16,28 +26,10 @@ function Graph(props) {
         ],
     };
 
-    const options = {
-        scales: {
-            xAxes: [{
-                type: 'time',
-                time: {
-                    unit: 'hour', // Change this according to your data
-                    displayFormats: {
-                        hour: 'hA', // Hourly format
-                    }
-                }
-            }],
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true,
-                },
-            }],
-        },
-    };
     return (
         <div>
             <h2>Line Example</h2>
-            <Line data={data} options={options} />
+            <Line data={chartData} ref={chartRef} id={id}/>
         </div>
     );
 }
