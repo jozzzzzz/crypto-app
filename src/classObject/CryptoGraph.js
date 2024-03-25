@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
 
 function CryptoGraph(symbol) {
     const [data, setData] = useState(null);
@@ -14,6 +13,6 @@ function CryptoGraph(symbol) {
     }, []);
   
     return data;
-  }
+}
 
 export default CryptoGraph;
