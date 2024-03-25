@@ -24,7 +24,7 @@ function App() {
   return (
     <div className='App'>
     <NavbarHeader />
-    {graphLabels.length > 0 && graphData.length > 0 && <Graph label={graphLabels} data={graphData} />}
+    {<Graph labels={graphLabels} data={graphData} />}
     { 
       cryptoList.map((crypto, index) => {
         return <CryptoData key={index} {...crypto} />

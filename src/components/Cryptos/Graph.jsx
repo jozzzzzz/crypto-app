@@ -1,18 +1,27 @@
-import React, { useRef } from 'react';
-import { Line } from 'react-chartjs-2';
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend,
+  } from 'chart.js';
+  import { Line } from 'react-chartjs-2';
+  
+  ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    LineElement,
+    Title,
+    Tooltip,
+    Legend
+  );
 
 function Graph({labels = [], data = []}) {
-    const chartRef = useRef(null);
-    const id = "123"
-
-    
-    if (id) {
-        const chartElement = document.getElementById(id);
-        if (chartElement) {
-            chartElement.parentElement.removeChild(chartElement);
-        }
-    }
-
+    console.log(data);
     const chartData = {
         labels,
         datasets: [
@@ -25,11 +34,21 @@ function Graph({labels = [], data = []}) {
             },
         ],
     };
+    const options = {
+        plugins: {
+            legend: true
+        },
+        scales: {
+            y : {
+                beginAtZero: true
+            }
+        }
+    };
 
     return (
         <div>
             <h2>Line Example</h2>
-            <Line data={chartData} ref={chartRef} id={id}/>
+            <Line data={chartData} options={options} />
         </div>
     );
 }
