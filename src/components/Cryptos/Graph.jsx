@@ -20,13 +20,13 @@ import { Line } from 'react-chartjs-2';
     Legend
   );
 
-function Graph({labels = [], data = []}) {
+function Graph({labels = [], data = [], currentSymbol = 'BTCUSDT'}) {
     console.log(data);
     const chartData = {
         labels,
         datasets: [
             {
-                label: 'Crypto Value',
+                label: `${currentSymbol} price`,
                 data,
                 fill: false,
                 backgroundColor: 'rgba(75,192,192,0.2)',
@@ -47,7 +47,7 @@ function Graph({labels = [], data = []}) {
 
     return (
         <div>
-            <h2>Line Example</h2>
+            <h2>{currentSymbol}</h2>
             <Line data={chartData} options={options} />
         </div>
     );

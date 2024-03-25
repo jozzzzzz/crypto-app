@@ -10,12 +10,29 @@ function App() {
   const [graphLabels, setGraphLabels] = useState([]);
   const [graphData, setGraphData] = useState([]);
 
+
+  const [inputValue, setInputValue] = useState('');
+  const [currentSymbol, setCurrentSymbol] = useState('BTCUSDT');
+
+
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+    setCurrentSymbol(inputValue.toUpperCase());
+  };
+
   let cryptoList = CryptoDisplay();
-  let cryptoGraph = CryptoGraph();
+  const cryptoGraph = CryptoGraph(currentSymbol);
+
+
+
   useEffect(() => {
     if (cryptoGraph && cryptoGraph.length > 0) {
-      const labels = cryptoGraph.map(crypto => crypto[0]);
-      const data = cryptoGraph.map(crypto => crypto[1]);
+      const labels = cryptoGraph.map(entry => new Date(entry[0]).toLocaleDateString());
+      const data = cryptoGraph.map(entry => parseFloat(entry[1]));
       setGraphLabels(labels);
       setGraphData(data);
     }
@@ -23,13 +40,24 @@ function App() {
 
   return (
     <div className='App'>
-    <NavbarHeader />
-    <Graph labels={graphLabels} data={graphData} />
-    { 
-      cryptoList.map((crypto, index) => {
-        return <CryptoData key={index} {...crypto} />
-      })
-    }
+      <NavbarHeader />
+
+      <form onSubmit={handleFormSubmit}>
+        <input
+          type="text"
+          value={inputValue}
+          onChange={handleInputChange}
+          placeholder="Enter crypto symbol (e.g., BTCUSDT)"
+        />
+        <button type="submit">Load Graph</button>
+      </form>
+
+      <Graph labels={graphLabels} data={graphData} currentSymbol={currentSymbol} />
+      {
+        cryptoList.map((crypto, index) => {
+          return <CryptoData key={index} {...crypto} />
+        })
+      }
     </div>
   );
 }
