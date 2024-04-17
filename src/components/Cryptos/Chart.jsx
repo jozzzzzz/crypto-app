@@ -9,7 +9,7 @@ import {
     Legend,
   } from 'chart.js';
 import { Line } from 'react-chartjs-2';
-import CryptoGraph from '../../classObject/CryptoGraph.js';
+import CryptoGraph from '../../callAPI/CryptoGraph.js';
 import { useState, useEffect } from 'react';
 
 ChartJS.register(
