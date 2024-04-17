@@ -64,7 +64,7 @@ function Chart(props) {
     };
 
     return (
-    <Line data={chartData} options={options} />
+    <Line data={chartData} options={options}/>
     );
 }
 
