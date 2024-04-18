@@ -11,6 +11,7 @@ import {
 import { Line } from 'react-chartjs-2';
 import CryptoGraph from '../../callAPI/CryptoGraph.js';
 import { useState, useEffect } from 'react';
+import './Chart.css'
 
 ChartJS.register(
     CategoryScale,
@@ -90,7 +91,9 @@ function Chart(props) {
     };
 
     return (
-    <Line data={chartData} options={options} />
+        <div className="graph">
+            <Line data={chartData} options={options}/>
+        </div>
     );
 }
 
