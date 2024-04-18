@@ -1,7 +1,7 @@
 import './App.css';
 import NavbarHeader from './components/Main/NavbarHeader.jsx';
 import CryptoData from './components/Cryptos/CryptoData.jsx';
-import Graph from './components/Main/Graph.jsx';
+import GraphSelection from './components/Main/GraphSelection.jsx';
 import CryptoDisplay from './callAPI/CryptoList.js';
 
 function App() {
@@ -13,7 +13,7 @@ function App() {
     <div className='App'>
       <NavbarHeader />
 
-      <Graph />
+      <GraphSelection />
       {
         cryptoList.map((crypto, index) => {
           return <CryptoData key={index} {...crypto} />

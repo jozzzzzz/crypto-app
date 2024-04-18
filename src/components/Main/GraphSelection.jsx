@@ -2,7 +2,7 @@ import Chart from '../Cryptos/Chart.jsx';
 import { useState } from 'react';
 import CryptoDisplay from '../../callAPI/CryptoList.js';
 
-function Graph() {
+function GraphSelection() {
     const [inputValue, setInputValue] = useState('');
     const [currentSymbol, setCurrentSymbol] = useState('LTCBTC');
     const [inputValue2, setInputValue2] = useState('');
@@ -26,7 +26,7 @@ function Graph() {
     
     const handleInputChange = (e) => {
         setInputValue(e.target.value);        
-        const filteredSuggestions = allCryptos.filter(crypto => crypto.startsWith(e.target.value));
+        const filteredSuggestions = allCryptos.filter(crypto => crypto.startsWith(e.target.value.toUpperCase()));
         console.log(filteredSuggestions);
         setSuggestions(filteredSuggestions.slice(0, 5));
     };
@@ -42,7 +42,7 @@ function Graph() {
 
     const handleInputChange2 = (e) => {
         setInputValue2(e.target.value);
-        const filteredSuggestions = allCryptos.filter(crypto => crypto.startsWith(e.target.value));
+        const filteredSuggestions = allCryptos.filter(crypto => crypto.startsWith(e.target.value.toUpperCase()));
         setSuggestions2(filteredSuggestions.slice(0, 5));
     };
     const handleFormSubmit2 = (e) => {
@@ -96,4 +96,4 @@ function Graph() {
     );
 }
 
-export default Graph;
+export default GraphSelection;
