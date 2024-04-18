@@ -30,7 +30,7 @@ function Chart(props) {
 
     const currentSymbol = props.currentSymbol;
     const secondSymbol = props.secondSymbol;
-    const showComparison = props.state;
+    const compareMode = props.compareMode;
 
     const cryptoGraph = CryptoGraph(currentSymbol);
     const secondCryptoGraph = CryptoGraph(secondSymbol);
@@ -65,7 +65,7 @@ function Chart(props) {
         },
     ];
 
-    if(showComparison === 'Remove comparison') {
+    if(compareMode) {
         data.push({
             label: `${secondSymbol} price`,
             data: graphData2,
@@ -79,6 +79,7 @@ function Chart(props) {
         labels: graphLabels,
         datasets: data,
     };
+    
     const options = {
         plugins: {
             legend: true
