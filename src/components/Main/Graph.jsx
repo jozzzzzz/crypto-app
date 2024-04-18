@@ -10,6 +10,7 @@ function Graph() {
     const [compareButton, setCompareButton] = useState('Compare crypto');
     const [visible, setVisible] = useState('collapse');
     const [suggestions, setSuggestions] = useState([]);
+    const [suggestions2, setSuggestions2] = useState([]);
 
     const allCryptos = CryptoDisplay().map(crypto => crypto.symbol);
 
@@ -42,7 +43,7 @@ function Graph() {
     const handleInputChange2 = (e) => {
         setInputValue2(e.target.value);
         const filteredSuggestions = allCryptos.filter(crypto => crypto.startsWith(e.target.value));
-        setSuggestions(filteredSuggestions.slice(0, 5));
+        setSuggestions2(filteredSuggestions.slice(0, 5));
     };
     const handleFormSubmit2 = (e) => {
         e.preventDefault();
@@ -50,7 +51,7 @@ function Graph() {
     };
     const handleSuggestions2 = (suggestion) => {
         setInputValue2(suggestion);
-        setSuggestions([]);
+        setSuggestions2([]);
         setSecondSymbol(suggestion);
     }
     
@@ -82,7 +83,7 @@ function Graph() {
                 <button type="submit">Load second Graph</button>
             </form>
             <div>
-                {suggestions.map((suggestion, index) => (
+                {suggestions2.map((suggestion, index) => (
                     <div key={index} onClick={() => handleSuggestions2(suggestion)} style={{ cursor: 'pointer' }}>
                         {suggestion}
                     </div>
