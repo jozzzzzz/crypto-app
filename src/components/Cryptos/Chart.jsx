@@ -25,10 +25,16 @@ ChartJS.register(
 function Chart(props) {
     const [graphLabels, setGraphLabels] = useState([]);
     const [graphData, setGraphData] = useState([]);
+    const [graphData2, setGraphData2] = useState([]);
 
-    const { currentSymbol } = props;
+    const currentSymbol = props.currentSymbol;
+    const secondSymbol = props.secondSymbol;
+    const showComparison = props.state;
+
     const cryptoGraph = CryptoGraph(currentSymbol);
-    
+    const secondCryptoGraph = CryptoGraph(secondSymbol);
+
+
     useEffect(() => {
         console.log('useEffect :', currentSymbol)
         if (cryptoGraph && cryptoGraph.length > 0) {
@@ -40,17 +46,37 @@ function Chart(props) {
         }
     }, [cryptoGraph, currentSymbol]);
 
+    useEffect(() => {
+        if (secondCryptoGraph && secondCryptoGraph.length > 0) {
+            console.log('secondCryptoGraph :', secondCryptoGraph[0][0])
+            const data = secondCryptoGraph.map(entry => parseFloat(entry[1]));
+            setGraphData2(data);
+        }
+    }, [secondCryptoGraph, secondSymbol]);
+
+    const data = [
+        {
+            label: `${currentSymbol} price`,
+            data: graphData,
+            fill: false,
+            backgroundColor: 'rgba(75,192,192,0.2)',
+            borderColor: 'rgba(75,192,192,1)',
+        },
+    ];
+
+    if(showComparison === 'Remove comparison') {
+        data.push({
+            label: `${secondSymbol} price`,
+            data: graphData2,
+            fill: false,
+            backgroundColor: 'rgba(192,75,192,0.2)',
+            borderColor: 'rgba(192,75,192,1)',
+        });
+    }
+
     const chartData = {
         labels: graphLabels,
-        datasets: [
-            {
-                label: `${currentSymbol} price`,
-                data: graphData,
-                fill: false,
-                backgroundColor: 'rgba(75,192,192,0.2)',
-                borderColor: 'rgba(75,192,192,1)',
-            },
-        ],
+        datasets: data,
     };
     const options = {
         plugins: {
