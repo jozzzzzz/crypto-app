@@ -1,5 +1,6 @@
 import Chart from '../Cryptos/Chart.jsx';
 import { useState } from 'react';
+import CryptoDisplay from '../../callAPI/CryptoList.js';
 
 function Graph() {
     const [inputValue, setInputValue] = useState('');
@@ -8,6 +9,9 @@ function Graph() {
     const [secondSymbol, setSecondSymbol] = useState('BNBBTC');
     const [compareButton, setCompareButton] = useState('Compare crypto');
     const [visible, setVisible] = useState('collapse');
+    const [suggestions, setSuggestions] = useState([]);
+
+    const allCryptos = CryptoDisplay().map(crypto => crypto.symbol);
 
     const secondCrypto = () => {
         if (compareButton === 'Compare crypto') {
@@ -20,22 +24,35 @@ function Graph() {
     };
     
     const handleInputChange = (e) => {
-        setInputValue(e.target.value);
+        setInputValue(e.target.value);        
+        const filteredSuggestions = allCryptos.filter(crypto => crypto.startsWith(e.target.value));
+        console.log(filteredSuggestions);
+        setSuggestions(filteredSuggestions.slice(0, 5));
     };
-
     const handleFormSubmit = (e) => {
         e.preventDefault();
         setCurrentSymbol(inputValue.toUpperCase());
     };
+    const handleSuggestions = (suggestion) => {
+        setInputValue(suggestion);
+        setSuggestions([]);
+        setCurrentSymbol(suggestion);
+    };
 
     const handleInputChange2 = (e) => {
         setInputValue2(e.target.value);
+        const filteredSuggestions = allCryptos.filter(crypto => crypto.startsWith(e.target.value));
+        setSuggestions(filteredSuggestions.slice(0, 5));
     };
-
     const handleFormSubmit2 = (e) => {
         e.preventDefault();
         setSecondSymbol(inputValue2.toUpperCase());
     };
+    const handleSuggestions2 = (suggestion) => {
+        setInputValue2(suggestion);
+        setSuggestions([]);
+        setSecondSymbol(suggestion);
+    }
     
     return (
         <div>
@@ -48,6 +65,13 @@ function Graph() {
                 />
                 <button type="submit">Load Graph</button>
             </form>
+            <div>
+                {suggestions.map((suggestion, index) => (
+                    <div key={index} onClick={() => handleSuggestions(suggestion)} style={{ cursor: 'pointer' }}>
+                        {suggestion}
+                    </div>
+                ))}
+            </div>
             <form onSubmit={handleFormSubmit2} style={{visibility: visible}}>
                 <input
                     type="text"
@@ -57,6 +81,13 @@ function Graph() {
                 />
                 <button type="submit">Load second Graph</button>
             </form>
+            <div>
+                {suggestions.map((suggestion, index) => (
+                    <div key={index} onClick={() => handleSuggestions2(suggestion)} style={{ cursor: 'pointer' }}>
+                        {suggestion}
+                    </div>
+                ))}
+            </div>
             <button onClick={secondCrypto}>{compareButton}</button>
             <h2>{currentSymbol}</h2>
             <Chart currentSymbol={currentSymbol} secondSymbol={secondSymbol} state={compareButton}/>
