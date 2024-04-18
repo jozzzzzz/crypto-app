@@ -1,102 +1,94 @@
+import React, { useState } from 'react';
+import CreatableSelect from 'react-select/creatable';
 import Chart from '../Cryptos/Chart.jsx';
-import { useState } from 'react';
 import CryptoDisplay from '../../callAPI/CryptoList.js';
+import './GraphSelection.css';
 
 function GraphSelection() {
-    const [inputValue, setInputValue] = useState('');
-    const [currentSymbol, setCurrentSymbol] = useState('LTCBTC');
-    const [inputValue2, setInputValue2] = useState('');
-    const [secondSymbol, setSecondSymbol] = useState('BNBBTC');
-    const [compareButton, setCompareButton] = useState('Compare crypto');
-    const [visible, setVisible] = useState('collapse');
-    const [suggestions, setSuggestions] = useState([]);
-    const [suggestions2, setSuggestions2] = useState([]);
+    const [currentCrypto, setCurrentCrypto] = useState({ value: 'LTCBTC', label: 'LTCBTC' });
+    const [secondCrypto, setSecondCrypto] = useState({ value: 'BNBBTC', label: 'BNBBTC' });
+    const [compareMode, setCompareMode] = useState(false);
 
-    const allCryptos = CryptoDisplay().map(crypto => crypto.symbol);
+    const allCryptos = CryptoDisplay().map(crypto => ({ value: crypto.symbol, label: crypto.symbol }));
 
-    const secondCrypto = () => {
-        if (compareButton === 'Compare crypto') {
-            setCompareButton('Remove comparison');
-            setVisible('visible');
-        } else {
-            setCompareButton('Compare crypto');
-            setVisible('collapse');
-        }
-    };
-    
-    const handleInputChange = (e) => {
-        setInputValue(e.target.value);        
-        const filteredSuggestions = allCryptos.filter(crypto => crypto.startsWith(e.target.value.toUpperCase()));
-        console.log(filteredSuggestions);
-        setSuggestions(filteredSuggestions.slice(0, 5));
-    };
-    const handleFormSubmit = (e) => {
-        e.preventDefault();
-        setCurrentSymbol(inputValue.toUpperCase());
-    };
-    const handleSuggestions = (suggestion) => {
-        setInputValue(suggestion);
-        setSuggestions([]);
-        setCurrentSymbol(suggestion);
+    const handleCryptoChange = (selectedOption) => {
+        setCurrentCrypto(selectedOption);
     };
 
-    const handleInputChange2 = (e) => {
-        setInputValue2(e.target.value);
-        const filteredSuggestions = allCryptos.filter(crypto => crypto.startsWith(e.target.value.toUpperCase()));
-        setSuggestions2(filteredSuggestions.slice(0, 5));
+    const handleSecondCryptoChange = (selectedOption) => {
+        setSecondCrypto(selectedOption);
     };
-    const handleFormSubmit2 = (e) => {
-        e.preventDefault();
-        setSecondSymbol(inputValue2.toUpperCase());
+
+    const toggleCompareMode = () => {
+        setCompareMode(!compareMode);
+
     };
-    const handleSuggestions2 = (suggestion) => {
-        setInputValue2(suggestion);
-        setSuggestions2([]);
-        setSecondSymbol(suggestion);
-    }
-    
+
+    const customStyles = {
+        control: (provided) => ({
+            ...provided,
+            backgroundColor: '#333',
+            color: '#fff',
+        }),
+        singleValue: (provided) => ({
+            ...provided,
+            color: '#fff',
+        }),
+        input: (provided) => ({
+            ...provided,
+            color: '#fff',
+        }),
+        menu: (provided) => ({
+            ...provided,
+            backgroundColor: '#333',
+        }),
+        option: (provided, state) => ({
+            ...provided,
+            color: state.isFocused ? '#333' : '#fff',
+            backgroundColor: state.isFocused ? '#fff' : '#333',
+        }),
+    };
+
     return (
         <div>
-            <form onSubmit={handleFormSubmit}>
-                <input
-                    type="text"
-                    value={inputValue}
-                    onChange={handleInputChange}
-                    placeholder="Enter crypto symbol (e.g., BTCUSDT)"
-                />
-                <button type="submit">Load Graph</button>
-            </form>
-            <div>
-                {suggestions.map((suggestion, index) => (
-                    <div key={index} onClick={() => handleSuggestions(suggestion)} style={{ cursor: 'pointer' }}>
-                        {suggestion}
+            <div className="container">
+                <div className="select-container">
+                    <CreatableSelect
+                        isClearable
+                        onChange={handleCryptoChange}
+                        options={allCryptos}
+                        value={currentCrypto}
+                        placeholder="Choose your crypto"
+                        styles={customStyles}
+                    />
+                </div>
+
+                {compareMode && (
+                    <div className="select-container">
+                        <CreatableSelect
+                            isClearable
+                            onChange={handleSecondCryptoChange}
+                            options={allCryptos}
+                            value={secondCrypto}
+                            placeholder="Choose your crypto"
+                            styles={customStyles}
+                        />
                     </div>
-                ))}
+                )}
             </div>
-            <form onSubmit={handleFormSubmit2} style={{visibility: visible}}>
-                <input
-                    type="text"
-                    value={inputValue2}
-                    onChange={handleInputChange2}
-                    placeholder="BNBBTC"
-                />
-                <button type="submit">Load second Graph</button>
-            </form>
-            <div>
-                {suggestions2.map((suggestion, index) => (
-                    <div key={index} onClick={() => handleSuggestions2(suggestion)} style={{ cursor: 'pointer' }}>
-                        {suggestion}
-                    </div>
-                ))}
-            </div>
-            <button onClick={secondCrypto}>{compareButton}</button>
-            <h2>{currentSymbol}</h2>
-            <div>
-                <button></button>
-                <button></button>
-                <button></button>
-            </div>
-            <Chart currentSymbol={currentSymbol} secondSymbol={secondSymbol} state={compareButton}/>
+
+            <button onClick={toggleCompareMode}>
+                {compareMode ? 'Remove comparison' : 'Compare crypto'}
+            </button>
+
+            <h2>{currentCrypto ? currentCrypto.label : 'Select a crypto'}</h2>
+            {compareMode && <h2>{secondCrypto ? secondCrypto.label : 'Select a second crypto'}</h2>}
+
+            <Chart
+                currentSymbol={currentCrypto.value}
+                secondSymbol={secondCrypto.value}
+                compareMode={compareMode}
+            />
         </div>
     );
 }
