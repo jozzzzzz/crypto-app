@@ -91,6 +91,11 @@ function GraphSelection() {
             </div>
             <button onClick={secondCrypto}>{compareButton}</button>
             <h2>{currentSymbol}</h2>
+            <div>
+                <button></button>
+                <button></button>
+                <button></button>
+            </div>
             <Chart currentSymbol={currentSymbol} secondSymbol={secondSymbol} state={compareButton}/>
         </div>
     );
