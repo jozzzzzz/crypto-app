@@ -24,60 +24,44 @@ ChartJS.register(
 );
 
 function Chart(props) {
-    const [graphLabels, setGraphLabels] = useState([]);
-    const [graphData, setGraphData] = useState([]);
-    const [graphData2, setGraphData2] = useState([]);
+    const [graphLabels, setGraphLabels] = useState([])
+    const [dataList, setDataList] = useState([])
+    const [graphData, setGraphData] = useState([])
 
-    const currentSymbol = props.currentSymbol;
-    const secondSymbol = props.secondSymbol;
-    const compareMode = props.compareMode;
+    const symbols = props.symbols;
 
-    const cryptoGraph = CryptoGraph(currentSymbol);
-    const secondCryptoGraph = CryptoGraph(secondSymbol);
-
+    const fetchData = CryptoGraph(symbols)
+    
+    if (fetchData && fetchData[1]) {
+        console.log('plein', fetchData)
+    } else console.log(fetchData)
+    useEffect(() => {
+        if (fetchData && fetchData[symbols.length-1]) {
+            setGraphLabels(fetchData[0].map(entry => new Date(entry[0]).toLocaleDateString()))
+            setDataList(fetchData.map((data, id) => {
+                return data.map(entry => parseFloat(entry[1]))
+            }))
+        }        
+    }, [fetchData, symbols])
 
     useEffect(() => {
-        console.log('useEffect :', currentSymbol)
-        if (cryptoGraph && cryptoGraph.length > 0) {
-            console.log('cryptoGraph :', cryptoGraph[0][0])
-            const labels = cryptoGraph.map(entry => new Date(entry[0]).toLocaleDateString());
-            const data = cryptoGraph.map(entry => parseFloat(entry[1]));
-            setGraphLabels(labels);
-            setGraphData(data);
+        if (dataList && dataList[symbols.length-1]) {
+            setGraphData(dataList.map((data, id) => {
+                return {
+                    label: `${symbols[id]} price`,
+                    data: data,
+                    fill: false,
+                    backgroundColor: 'rgba(192,75,192,0.2)',
+                    borderColor: 'rgba(192,75,192,1)',
+                }
+            }))
+            console.log('passed with dataList :', dataList, 'and dataList[1] :', dataList[symbols.length-1])
         }
-    }, [cryptoGraph, currentSymbol]);
-
-    useEffect(() => {
-        if (secondCryptoGraph && secondCryptoGraph.length > 0) {
-            console.log('secondCryptoGraph :', secondCryptoGraph[0][0])
-            const data = secondCryptoGraph.map(entry => parseFloat(entry[1]));
-            setGraphData2(data);
-        }
-    }, [secondCryptoGraph, secondSymbol]);
-
-    const data = [
-        {
-            label: `${currentSymbol} price`,
-            data: graphData,
-            fill: false,
-            backgroundColor: 'rgba(75,192,192,0.2)',
-            borderColor: 'rgba(75,192,192,1)',
-        },
-    ];
-
-    if(compareMode) {
-        data.push({
-            label: `${secondSymbol} price`,
-            data: graphData2,
-            fill: false,
-            backgroundColor: 'rgba(192,75,192,0.2)',
-            borderColor: 'rgba(192,75,192,1)',
-        });
-    }
+    }, [dataList, symbols])
 
     const chartData = {
         labels: graphLabels,
-        datasets: data,
+        datasets: graphData,
     };
     
     const options = {
