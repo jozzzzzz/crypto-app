@@ -7,7 +7,8 @@ function CryptoDisplay() {
         fetch('https://api.binance.com/api/v3/ticker/price')
             .then(response => response.json())
             .then(data => {
-                setCryptos(data);
+                const usdtCryptos = data.filter(crypto => crypto.symbol.endsWith('USDT'));
+                setCryptos(usdtCryptos);
             })
             .catch(error => console.log(error));
     }, []);
