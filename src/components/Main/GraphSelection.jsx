@@ -5,14 +5,18 @@ import CryptoDisplay from '../../callAPI/CryptoList.js';
 import './GraphSelection.css';
 
 function GraphSelection() {
-    const [currentCrypto, setCurrentCrypto] = useState({ value: 'LTCBTC', label: 'LTCBTC' });
-    const [secondCrypto, setSecondCrypto] = useState({ value: 'BNBBTC', label: 'BNBBTC' });
+    const [currentCrypto, setCurrentCrypto] = useState({ value: 'BTCUSDT', label: 'BTC' });
+    const [secondCrypto, setSecondCrypto] = useState({ value: 'LTCUSDT', label: 'LTC' });
     const [compareMode, setCompareMode] = useState(false);
 
-    const allCryptos = CryptoDisplay().map(crypto => ({ value: crypto.symbol, label: crypto.symbol }));
+    const allCryptos = CryptoDisplay().map(crypto => ({ value: crypto.symbol, label: crypto.symbol.replace("USDT", "") }));
 
     const handleCryptoChange = (selectedOption) => {
-        setCurrentCrypto(selectedOption);
+        if (selectedOption) {
+            setCurrentCrypto(selectedOption);
+        } else {
+            setCurrentCrypto({ value: 'BTCUSDT', label: 'BTCUSDT' });
+        }
     };
 
     const handleSecondCryptoChange = (selectedOption) => {
@@ -85,8 +89,8 @@ function GraphSelection() {
             {compareMode && <h2>{secondCrypto ? secondCrypto.label : 'Select a second crypto'}</h2>}
 
             <Chart
-                currentSymbol={currentCrypto.value}
-                secondSymbol={secondCrypto.value}
+                currentSymbol={currentCrypto ? currentCrypto.value : null}
+                secondSymbol={secondCrypto ? secondCrypto.value : null}
                 compareMode={compareMode}
             />
         </div>
