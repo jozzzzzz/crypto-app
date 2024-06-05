@@ -55,7 +55,22 @@ function Chart(props) {
     };
     const options = {
         plugins: {
-            legend: true
+            legend: true,
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        var label = context.dataset.label || '';
+    
+                        if (label) {
+                            label += ': ';
+                        }
+                        if (context.raw.y !== null) {
+                            label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(context.raw.y);
+                        }
+                        return label;
+                    }
+                }
+            }
         },
         scales: {
             y : {
