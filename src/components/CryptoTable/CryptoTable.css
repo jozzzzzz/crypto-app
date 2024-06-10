@@ -1,0 +1,30 @@
+.crypto-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #007BFF;
+}
+
+.crypto-table th, .crypto-table td {
+    border: 1px solid #007BFF;
+    padding: 8px;
+    text-align: left;
+}
+
+.crypto-table th {
+    background-color: #007BFF;
+    color: white;
+    padding: 12px;
+}
+
+.crypto-table tr {
+    background-color: #374151;
+    color: white;
+}
+
+.crypto-table tr:hover {
+    background-color: #1e3a8a;
+}
+
+.crypto-table td {
+    padding: 12px;
+}
