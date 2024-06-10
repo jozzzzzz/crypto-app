@@ -1,7 +1,7 @@
 import './App.css';
-import NavbarHeader from './components/Main/NavbarHeader.jsx';
-import CryptoData from './components/Cryptos/CryptoData.jsx';
-import GraphSelection from './components/Main/GraphSelection.jsx';
+import NavbarHeader from './components/Navbar/NavbarHeader.jsx';
+import CryptoData from './components/CryptoData/CryptoData.jsx';
+import GraphSelection from './components/GraphSelection/GraphSelection.jsx';
 import CryptoDisplay from './callAPI/CryptoList.js';
 
 function App() {
