@@ -1,20 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useTable } from 'react-table';
-import CryptoTableData from '../../callAPI/CryptoTableData';
+import useCryptoTableData from '../../callAPI/CryptoTableData';
 import './CryptoTable.css';
 
 function CryptoTable() {
     const [count, setCount] = useState(50);
     const [inputValue, setInputValue] = useState('');
-    const allData = CryptoTableData();
-    const data = allData.slice(0, count);
+    const allData = useCryptoTableData();
+    const data = Array.isArray(allData) ? allData : [];
 
     const filteredData = inputValue
-        ? allData.filter(crypto => crypto.name.toLowerCase().includes(inputValue.toLowerCase()))
+        ? data.filter(crypto => crypto.name.toLowerCase().includes(inputValue.toLowerCase()))
         : data;
+
+    const displayedData = filteredData.slice(0, count);
 
     const handleInputChange = (event) => {
         setInputValue(event.target.value);
+    };
+
+    const getChangeClass = (value) => {
+        return parseFloat(value) > 0 ? 'positive-change' : 'negative-change';
     };
 
     const columns = React.useMemo(
@@ -32,24 +38,22 @@ function CryptoTable() {
                 accessor: 'price'
             },
             {
-                Header: '1h %',
-                accessor: 'change1h'
-            },
-            {
                 Header: '24h %',
-                accessor: 'change24h'
+                accessor: 'change24h',
+                Cell: ({ value }) => (
+                    <span className={getChangeClass(value)}>
+                        {value}
+                    </span>
+                )
             },
             {
-                Header: '7d %',
-                accessor: 'change7d'
-            },
-            {
-                Header: 'Market cap',
-                accessor: 'marketCap'
-            },
-            {
-                Header: 'Volume (24h)',
-                accessor: 'volume24h'
+                Header: '1m %',
+                accessor: 'change1m',
+                Cell: ({ value }) => (
+                    <span className={getChangeClass(value)}>
+                        {value}
+                    </span>
+                )
             }
         ],
         []
@@ -61,7 +65,7 @@ function CryptoTable() {
         headerGroups,
         rows,
         prepareRow
-    } = useTable({ columns, data: filteredData });
+    } = useTable({ columns, data: displayedData });
 
     return (
         <div>
@@ -87,7 +91,7 @@ function CryptoTable() {
                         id="crypto-input"
                         value={inputValue}
                         onChange={handleInputChange}
-                        placeholder="Entrez le symbole"
+                        placeholder="Entrez le nom de la crypto"
                         className="styled-input"
                     />
                 </div>

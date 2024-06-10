@@ -64,3 +64,11 @@
 .crypto-table td {
     padding: 12px;
 }
+
+.positive-change {
+    color: rgb(24, 204, 24);
+}
+
+.negative-change {
+    color: rgb(255, 19, 19);
+}
