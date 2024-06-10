@@ -24,6 +24,15 @@ function useCryptoTableData() {
                     return data.map(d => parseFloat(d[2]));
                 };
 
+                const formatPrice = (price) => {
+                    let formattedPrice = price.toFixed(8);
+                    formattedPrice = parseFloat(formattedPrice).toString();
+                    if (formattedPrice.indexOf('.') !== -1 && formattedPrice.split('.')[1].length < 2) {
+                        formattedPrice += '0';
+                    }
+                    return formattedPrice;
+                };
+
                 const cryptosData = await Promise.all(symbols.map(async (crypto, index) => {
                     const prices1m = await fetchHistoricalPrices(crypto.symbol, '1d', 30);
 
@@ -32,7 +41,7 @@ function useCryptoTableData() {
                     return {
                         rank: index + 1,
                         name: crypto.symbol.replace("USDT", ""),
-                        price: crypto.currentPrice.toFixed(2) + " $",
+                        price: formatPrice(crypto.currentPrice) + " $",
                         change24h: crypto.change24h.toFixed(2) + " %",
                         change1m: change1m + " %",
                     };
