@@ -4,10 +4,10 @@ import CryptoTableData from '../../callAPI/CryptoTableData';
 import './CryptoTable.css';
 
 function CryptoTable() {
-    const [count, setCount] = useState(10); // Initialiser avec 10 cryptos
+    const [count, setCount] = useState(50);
     const [inputValue, setInputValue] = useState('');
-    const allData = CryptoTableData(); // Obtenir toutes les cryptos
-    const data = allData.slice(0, count); // Limiter le nombre de cryptos affichés
+    const allData = CryptoTableData();
+    const data = allData.slice(0, count);
 
     const filteredData = inputValue
         ? allData.filter(crypto => crypto.name.toLowerCase().includes(inputValue.toLowerCase()))
@@ -24,11 +24,11 @@ function CryptoTable() {
                 accessor: 'rank'
             },
             {
-                Header: 'Nom',
+                Header: 'Name',
                 accessor: 'name'
             },
             {
-                Header: 'Prix',
+                Header: 'Price',
                 accessor: 'price'
             },
             {
@@ -44,7 +44,7 @@ function CryptoTable() {
                 accessor: 'change7d'
             },
             {
-                Header: 'Cap. Marché',
+                Header: 'Market cap',
                 accessor: 'marketCap'
             },
             {
@@ -72,8 +72,9 @@ function CryptoTable() {
                         id="crypto-count"
                         value={count}
                         onChange={(e) => setCount(Number(e.target.value))}
+                        className="styled-select"
                     >
-                        {[50, 250, 500, 1000].map((option) => (
+                        {[50, 250, 500].map((option) => (
                             <option key={option} value={option}>
                                 {option}
                             </option>
@@ -87,6 +88,7 @@ function CryptoTable() {
                         value={inputValue}
                         onChange={handleInputChange}
                         placeholder="Entrez le symbole"
+                        className="styled-input"
                     />
                 </div>
             </div>

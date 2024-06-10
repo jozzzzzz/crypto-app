@@ -1,16 +1,22 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import './App.css';
-import NavbarHeader from './components/Navbar/NavbarHeader.jsx';
-import GraphSelection from './components/GraphSelection/GraphSelection.jsx';
-import CryptoTable from './components/CryptoTable/CryptoTable.jsx';
+import NavbarHeader from './components/Navbar/NavbarHeader';
+import GraphPage from './pages/GraphPage';
+import TablePage from './pages/TablePage';
 
 function App() {
     return (
-        <div className='App'>
-            <NavbarHeader />
-            <GraphSelection />
-            <CryptoTable />
-        </div>
+        <Router>
+            <div className='App'>
+                <NavbarHeader />
+                <Routes>
+                    <Route path="/compare" element={<GraphPage />} />
+                    <Route path="/leaderboard" element={<TablePage />} />
+                    <Route path="/" element={<GraphPage />} />
+                </Routes>
+            </div>
+        </Router>
     );
 }
 

@@ -17,7 +17,7 @@ function CryptoTableData() {
                     marketCap: (Math.random() * 1e10).toFixed(2),
                     volume24h: (Math.random() * 1e9).toFixed(2)
                 }));
-                console.log(filteredData); // Ajoutez cette ligne pour déboguer
+                console.log(filteredData);
                 setCryptos(filteredData);
             })
             .catch(error => console.log(error));

@@ -5,7 +5,7 @@ import CryptoDisplay from '../../callAPI/CryptoList.js';
 import './GraphSelection.css';
 
 function GraphSelection() {
-    const [currentCrypto, setCurrentCrypto] = useState({ value: 'BTCUSDT', label: 'BTC' });
+    const [currentCrypto, setCurrentCrypto] = useState({ value: 'BNBUSDT', label: 'BNB' });
     const [secondCrypto, setSecondCrypto] = useState({ value: 'LTCUSDT', label: 'LTC' });
     const [compareMode, setCompareMode] = useState(false);
 
@@ -15,7 +15,7 @@ function GraphSelection() {
         if (selectedOption) {
             setCurrentCrypto(selectedOption);
         } else {
-            setCurrentCrypto({ value: 'BTCUSDT', label: 'BTCUSDT' });
+            setCurrentCrypto({ value: 'BNBUSDT', label: 'BNB' });
         }
     };
 
@@ -25,7 +25,6 @@ function GraphSelection() {
 
     const toggleCompareMode = () => {
         setCompareMode(!compareMode);
-
     };
 
     const customStyles = {
@@ -81,12 +80,14 @@ function GraphSelection() {
                 )}
             </div>
 
-            <button onClick={toggleCompareMode}>
+            <button onClick={toggleCompareMode} className={compareMode ? 'remove-button' : 'compare-button'}>
                 {compareMode ? 'Remove comparison' : 'Compare crypto'}
             </button>
 
-            <h2>{currentCrypto ? currentCrypto.label : 'Select a crypto'}</h2>
-            {compareMode && <h2>{secondCrypto ? secondCrypto.label : 'Select a second crypto'}</h2>}
+            <div className="show-crypto">
+                <span className="crypto blue">{currentCrypto ? currentCrypto.label : 'Select a crypto'}</span>
+                {compareMode && <span className="crypto purple">{secondCrypto ? secondCrypto.label : 'Select a second crypto'}</span>}
+            </div>
 
             <Chart
                 currentSymbol={currentCrypto ? currentCrypto.value : null}
